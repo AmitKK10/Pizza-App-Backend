@@ -11,7 +11,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:3000', // local dev
-    'https://pizza-app-frontend-ebon.vercel.app' // deployed frontend
+    'https://pizza-app-frontend-jzcn.vercel.app/' // deployed frontend
   ],
   credentials: true
 }));
