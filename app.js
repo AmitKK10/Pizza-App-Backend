@@ -7,12 +7,23 @@ const cors = require('cors');
 
 const app = express();
 
+// ✅ Allowed origins list
+const allowedOrigins = [
+  'http://localhost:3000', // local dev
+  'https://pizza-app-frontend-ebon.vercel.app', // old Vercel frontend
+  'https://pizza-app-frontend-jzcn.vercel.app'  // new Vercel frontend
+];
+
 // ✅ Middleware
 app.use(cors({
-  origin: [
-    'http://localhost:3000', // local dev
-    'https://pizza-app-frontend-jzcn.vercel.app/' // deployed frontend
-  ],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
@@ -39,7 +50,7 @@ app.use('/api/pizza', pizzaRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/payment', paymentRoutes); // ✅ already added, no need to re-add it again
+app.use('/api/payment', paymentRoutes);
 
 // ✅ Root Test Routes
 app.get('/api', (req, res) => {
@@ -58,4 +69,6 @@ app.use((err, req, res, next) => {
 
 // ✅ Start Server
 const PORT = process.env.PORT || 55000;
+app.listen(PORT, () => console.log(`🍕 Server running on port ${PORT}`));
+
 app.listen(PORT, () => console.log(`🍕 Server running on port ${PORT}`));
