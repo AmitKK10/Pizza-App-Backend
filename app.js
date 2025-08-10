@@ -9,9 +9,13 @@ const app = express();
 
 // ✅ Middleware
 app.use(cors({
-  origin: 'http://localhost:3000', // frontend URL
+  origin: [
+    'http://localhost:3000', // local dev
+    'https://pizza-app-frontend-ebon.vercel.app' // deployed frontend
+  ],
   credentials: true
 }));
+
 app.use(express.json());
 
 // ✅ Database Connection
